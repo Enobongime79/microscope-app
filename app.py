@@ -26,7 +26,7 @@ def save_to_db(username, specimen_size, actual_size):
 
 
 def calculate_real_life_size(microscope_size, magnification):
-    return microscope_size / magnification
+    return round(microscope_size / magnification * 1000, 2)
 
 
 def main():
@@ -37,7 +37,7 @@ def main():
 
     with st.form("size_form"):
         username = st.text_input("Enter your name")
-        microscope_size = st.number_input("Microscope size (µm)", min_value=0.0, format="%.2f")
+        microscope_size = st.number_input("Microscope size (mm)", min_value=0.0, format="%.2f")
         magnification = st.number_input("Magnification", min_value=1.0, format="%.2f")
         submitted = st.form_submit_button("Calculate and Save")
 
@@ -58,7 +58,7 @@ def main():
         conn.close()
 
         if rows:
-            df = pd.DataFrame(rows, columns=["Username", "Specimen Size (µm)", "Actual Size (µm)"])
+            df = pd.DataFrame(rows, columns=["Username", "Specimen Size (mm)", "Actual Size (µm)"])
             st.table(df)
         else:
             st.info("No records found yet.")
